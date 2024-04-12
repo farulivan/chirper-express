@@ -165,8 +165,6 @@ export default class ChirpService {
     };
   }
 
-  // In ChirpService
-
   /**
    * Deletes a chirp if the user requesting the deletion is the creator.
    * @param {Object} user - The user requesting the deletion.

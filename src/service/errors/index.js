@@ -1,5 +1,8 @@
 import { constants as httpConstants } from 'http2';
 
+/**
+ * Error representing an internal server error.
+ */
 export class ErrInternalServer extends Error {
   constructor(message) {
     super(message);
@@ -8,6 +11,9 @@ export class ErrInternalServer extends Error {
   }
 }
 
+/**
+ * Error representing an invalid message error, typically for bad request data.
+ */
 export class ErrInvalidMessage extends Error {
   constructor(message) {
     super(message);
@@ -16,6 +22,9 @@ export class ErrInvalidMessage extends Error {
   }
 }
 
+/**
+ * Error representing an invalid email format error.
+ */
 export class ErrInvalidEmail extends Error {
   constructor(message) {
     super(message);
@@ -24,6 +33,9 @@ export class ErrInvalidEmail extends Error {
   }
 }
 
+/**
+ * Error representing an invalid password error, typically for password format validation.
+ */
 export class ErrInvalidPassword extends Error {
   constructor(message) {
     super(message);
@@ -32,6 +44,9 @@ export class ErrInvalidPassword extends Error {
   }
 }
 
+/**
+ * Error representing invalid credentials provided during authentication.
+ */
 export class ErrInvalidCreds extends Error {
   constructor(message) {
     super(message);
@@ -40,6 +55,9 @@ export class ErrInvalidCreds extends Error {
   }
 }
 
+/**
+ * Error representing an invalid name error, typically used when validating user input.
+ */
 export class ErrInvalidName extends Error {
   constructor(message) {
     super(message);
@@ -48,6 +66,9 @@ export class ErrInvalidName extends Error {
   }
 }
 
+/**
+ * Error representing an error when an email is already registered.
+ */
 export class ErrEmailAlreadyRegistered extends Error {
   constructor(message) {
     super(message);
@@ -56,6 +77,9 @@ export class ErrEmailAlreadyRegistered extends Error {
   }
 }
 
+/**
+ * Error representing an invalid access token.
+ */
 export class ErrInvalidAccessToken extends Error {
   constructor(message) {
     super(message);
@@ -64,6 +88,9 @@ export class ErrInvalidAccessToken extends Error {
   }
 }
 
+/**
+ * Error representing an invalid refresh token.
+ */
 export class ErrInvalidRefreshToken extends Error {
   constructor(message) {
     super(message);
@@ -72,6 +99,9 @@ export class ErrInvalidRefreshToken extends Error {
   }
 }
 
+/**
+ * Error representing a resource not found error.
+ */
 export class ErrNotFound extends Error {
   constructor(message) {
     super(message);
@@ -80,6 +110,9 @@ export class ErrNotFound extends Error {
   }
 }
 
+/**
+ * Error representing a forbidden access error, typically when access is denied for an operation.
+ */
 export class ErrForbiddenAccess extends Error {
   constructor(message) {
     super(message);
