@@ -1,20 +1,22 @@
-import jwt from 'jsonwebtoken';
+import TokenRepository from '../repository/auth/token/jwt/index.js';
+import { ErrInvalidAccessToken } from '../service/errors/index.js';
 
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
+/**
+ * Middleware factory that creates an authentication middleware using a TokenRepository.
+ * @param {TokenRepository} tokenRepository The repository to use for token operations.
+ * @returns {Function} Middleware function for authenticating tokens.
+ */
+export default function authenticateToken(tokenRepository) {
+  return (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]; // Extract the token from 'Bearer TOKEN'
 
-  if (token == null) return res.sendStatus(401); // If no token is found
+    if (!token) {
+      throw new ErrInvalidAccessToken('invalid access token');
+    }
 
-  jwt.verify(token, 'secret', (err, user) => {
-    if (err)
-      return res.status(403).send({
-        err: 'ERR_INVALID_ACCESS_TOKEN',
-        msg: 'Invalid access token',
-      });
+    const user = tokenRepository.verifyAccessToken(token);
     req.user = user;
     next();
-  });
-};
-
-export default authenticateToken;
+  };
+}

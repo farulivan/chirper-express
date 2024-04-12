@@ -1,5 +1,8 @@
 import jwt from 'jsonwebtoken';
-import { ErrInvalidRefreshToken } from '../../../../service/errors/index.js';
+import {
+  ErrInvalidAccessToken,
+  ErrInvalidRefreshToken,
+} from '../../../../service/errors/index.js';
 
 /**
  * Manages JWT token operations such as creation and verification.
@@ -43,13 +46,19 @@ export default class TokenRepository {
    * Verifies and decodes an access token.
    * @param {string} token - The access token to verify.
    * @returns {Object} The decoded token payload if verification is successful.
-   * @throws {Error} If token verification fails.
+   * @throws {jwt.JsonWebTokenError} If token verification fails due to various reasons like expiration, invalid token, etc.
    */
   verifyAccessToken(token) {
     try {
       return jwt.verify(token, this.accessTokenSecret);
     } catch (error) {
-      throw new ErrInvalidRefreshToken('invalid refresh token');
+      if (error instanceof jwt.JsonWebTokenError) {
+        // Handle JWT-related errors (e.g., token malformed, invalid signature)
+        throw new ErrInvalidAccessToken('invalid access token');
+      } else {
+        // Handle any other unexpected errors
+        throw new Error(error);
+      }
     }
   }
 
@@ -57,13 +66,19 @@ export default class TokenRepository {
    * Verifies and decodes a refresh token.
    * @param {string} token - The refresh token to verify.
    * @returns {Object} The decoded token payload if verification is successful.
-   * @throws {Error} If token verification fails.
+   * @throws {jwt.JsonWebTokenError} If token verification fails due to various reasons like expiration, invalid token, etc.
    */
   verifyRefreshToken(token) {
     try {
       return jwt.verify(token, this.refreshTokenSecret);
     } catch (error) {
-      throw new ErrInvalidRefreshToken('invalid refresh token');
+      if (error instanceof jwt.JsonWebTokenError) {
+        // Handle JWT-related errors (e.g., token malformed, invalid signature)
+        throw new ErrInvalidRefreshToken('invalid refresh token');
+      } else {
+        // Handle any other unexpected errors
+        throw new Error(error);
+      }
     }
   }
 }

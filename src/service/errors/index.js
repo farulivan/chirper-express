@@ -56,6 +56,14 @@ export class ErrEmailAlreadyRegistered extends Error {
   }
 }
 
+export class ErrInvalidAccessToken extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'ERR_INVALID_ACCESS_TOKEN';
+    this.statusCode = httpConstants.HTTP_STATUS_UNAUTHORIZED;
+  }
+}
+
 export class ErrInvalidRefreshToken extends Error {
   constructor(message) {
     super(message);

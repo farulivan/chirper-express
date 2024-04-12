@@ -132,14 +132,10 @@ export default class SessionService {
    * @throws {Error} When refresh token validation fails.
    */
   async getNewAccessToken(refreshToken) {
-    // Decode and verify refreshToken using jwt
+    // Decode and verify refreshToken
     const decoded = await this.#tokenRepository.verifyRefreshToken(
       refreshToken
     );
-
-    if (!decoded) {
-      throw new ErrInvalidRefreshToken('invalid refresh token');
-    }
 
     // Check the database if the refreshToken is valid
     const isValidToken = await this.#sessionRepository.isRefreshTokenValid(

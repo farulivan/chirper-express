@@ -52,7 +52,7 @@ app.put('/api/session', async (...args) => {
   sessionController.refreshTokenHandler(...args);
 });
 
-app.use(authenticateToken);
+app.use(authenticateToken(tokenRepository));
 
 app.post('/api/chirps', async (...args) => {
   chirpController.createChirpHandler(...args);
