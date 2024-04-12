@@ -19,4 +19,10 @@ git clone https://github.com/yourusername/chirper-api.git
 cd chirper-api
 ```
 
+# How to Run
+
+- Copy `.env.example` to `.env`
+- To run the database use `docker compose up`
+- Run the node app in a new terminal using `npm run start`
+
 Happy Chirping!
