@@ -198,7 +198,7 @@ describe('SessionService', () => {
           mockSessionRepo.isRefreshTokenValid.mockResolvedValue(true);
           mockTokenRepo.generateAccessToken.mockReturnValue('new-access-token');
         },
-        expected: 'new-access-token',
+        expected: { access_token: 'new-access-token' },
         expectedError: null,
       },
       {
