@@ -1,31 +1,38 @@
 version: '3.8'
-
 services:
+  chirper-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=chirper
+      - DB_PASSWORD=secret
+      - DB_NAME=chirper_local
+      - BCRYPT_SALT_ROUNDS=10
+      - REFRESH_TOKEN_EXPIRY_DAYS=30
+    depends_on:
+      - mysql
+
   mysql:
     image: mysql:8.0
     ports:
-      - 3366:3306
+      - "3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=secret
-      - MYSQL_USER=chirper
       - MYSQL_DATABASE=chirper_local
+      - MYSQL_USER=chirper
       - MYSQL_PASSWORD=secret
-      - ALLOW_EMPTY_PASSWORD=1
+      - ALLOW_EMPTY_PASSWORD=no
     volumes:
       - ./src/database/db.sql:/docker-entrypoint-initdb.d/db.sql
 
-  # node:
-  #   build: .
-  #   ports:
-  #     - "3000:3000"
-  #   environment:
-  #     - MYSQL_HOST=mysql
-  #     - MYSQL_PORT=3306
-  #     - MYSQL_USER=chirper
-  #     - MYSQL_PASSWORD=secret
-  #     - MYSQL_DATABASE=chirper_local
-  #   volumes:
-  #     - .:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   depends_on:
-  #     - mysql
+volumes:
+  mysql-data:

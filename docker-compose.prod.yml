@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  chirper-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=chirper
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+      - DB_NAME=chirper
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=chirper
+      - MYSQL_USER=chirper
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - ALLOW_EMPTY_PASSWORD=no
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:

@@ -7,17 +7,20 @@ WORKDIR /app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install production dependencies.
-RUN npm install --only=production
+# Install all dependencies including 'devDependencies'
+RUN npm install
+
+# Install nodemon globally within the container
+RUN npm install -g nodemon
 
 # Copy the rest of your application's code
 COPY . .
 
-# Set environment variable to production
-ENV NODE_ENV=production
+# Set environment variable to development
+ENV NODE_ENV=development
 
 # Expose port 3000 to the outside once the container is launched
 EXPOSE 3000
 
-# Run the application
-CMD ["node", "src/index.js"]
+# Run the application using nodemon
+CMD ["nodemon", "--exec", "node", "src/index.js"]
