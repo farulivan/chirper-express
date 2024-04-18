@@ -1,0 +1,51 @@
+name: Chirper Deployment in EC2 using Docker
+on:
+  push:
+    branches:
+      - deploy/init-cicd
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current commit
+        uses: actions/checkout@v2
+      - name: Login to DockerHub
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - name: Build and push the application image
+        id: build-image
+        run: |
+          docker build -f ./deploy/aws/Dockerfile -t chirper-api:latest .
+          echo "::set-output name=image-tag::chirper-api:latest"
+      - name: Push Docker image
+        run: |
+          docker tag ${{ steps.build-image.outputs.image-tag }} ${{ secrets.DOCKER_USER }}/${{ steps.build-image.outputs.image-tag }}
+          docker push ${{ secrets.DOCKER_USER }}/${{ steps.build-image.outputs.image-tag }}
+      - name: Download Repository Files
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          envs: GITHUB_SHA
+          script: |
+            # prepare application folder
+            rm -rf app
+            mkdir -p app
+            # download repository files
+            git clone git@github.com:knightazura/nabitu-chirper-api-2024.git app
+      - name: Deploy the application using Docker Compose
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          envs: GITHUB_SHA
+          script: |
+            # execute the app using docker compose
+            cd app
+            git checkout deploy/init-cicd
+            docker compose -f ./deploy/aws/docker-compose.yaml down --remove-orphans
+            docker compose -f ./deploy/aws/docker-compose.yaml up -d
