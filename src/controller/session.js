@@ -29,7 +29,7 @@ export default class SessionController {
 
     try {
       const result = await this.#sessionService.login(email, password);
-      res.json(result);
+      res.status(200).json(result);
     } catch (error) {
       next(error);
     }
@@ -72,7 +72,7 @@ export default class SessionController {
       const accessToken = await this.#sessionService.getNewAccessToken(
         refreshToken
       );
-      res.json({ access_token: accessToken });
+      res.status(200).json(accessToken);
     } catch (error) {
       next(error);
     }

@@ -154,7 +154,7 @@ export default class SessionService {
       '5m'
     );
 
-    return accessToken;
+    return { access_token: accessToken };
   }
 
   /**
