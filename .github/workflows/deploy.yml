@@ -2,7 +2,7 @@ name: Chirper Deployment in EC2 using Docker
 on:
   push:
     branches:
-      - deploy/init-cicd
+      - main
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
