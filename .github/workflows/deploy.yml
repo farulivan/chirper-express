@@ -24,7 +24,7 @@ jobs:
           docker tag ${{ steps.build-image.outputs.image-tag }} ${{ secrets.DOCKER_USER }}/${{ steps.build-image.outputs.image-tag }}
           docker push ${{ secrets.DOCKER_USER }}/${{ steps.build-image.outputs.image-tag }}
       - name: Download Repository Files
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
@@ -32,15 +32,10 @@ jobs:
           envs: GITHUB_SHA
           script: |
             # prepare application folder
-            echo "Removing existing application folder..."
             rm -rf app
-            echo "Creating new application folder..."
             mkdir -p app
-            echo "Cloning repository..."
+            # download repository files
             git clone https://github.com/farulivan/chirper-express.git app
-            cd app
-            echo "Repository files:"
-            ls -l
       - name: Deploy the application using Docker Compose
         uses: appleboy/ssh-action@master
         with:
