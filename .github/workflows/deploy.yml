@@ -35,7 +35,7 @@ jobs:
             rm -rf app
             mkdir -p app
             # download repository files
-            git clone git@github.com:farulivan/chirper-express.git app
+            git clone https://github.com/farulivan/chirper-express.git app
       - name: Deploy the application using Docker Compose
         uses: appleboy/ssh-action@master
         with:
