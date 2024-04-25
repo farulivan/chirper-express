@@ -46,6 +46,5 @@ jobs:
           script: |
             # execute the app using docker compose
             cd app
-            git checkout main
             docker compose -f docker-compose.prod.yaml down --remove-orphans
             docker compose -f docker-compose.prod.yaml up -d
