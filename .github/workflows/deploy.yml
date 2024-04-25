@@ -32,10 +32,15 @@ jobs:
           envs: GITHUB_SHA
           script: |
             # prepare application folder
+            echo "Removing existing application folder..."
             rm -rf app
+            echo "Creating new application folder..."
             mkdir -p app
-            # download repository files
+            echo "Cloning repository..."
             git clone https://github.com/farulivan/chirper-express.git app
+            cd app
+            echo "Repository files:"
+            ls -l
       - name: Deploy the application using Docker Compose
         uses: appleboy/ssh-action@master
         with:
