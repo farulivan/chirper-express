@@ -17,7 +17,7 @@ jobs:
       - name: Build and push the application image
         id: build-image
         run: |
-          docker build -f ./deploy/aws/Dockerfile -t chirper-api:latest .
+          docker build -f ./Dockerfile -t chirper-api:latest .
           echo "::set-output name=image-tag::chirper-api:latest"
       - name: Push Docker image
         run: |
@@ -35,7 +35,7 @@ jobs:
             rm -rf app
             mkdir -p app
             # download repository files
-            git clone git@github.com:knightazura/nabitu-chirper-api-2024.git app
+            git clone git@github.com:farulivan/chirper-express.git app
       - name: Deploy the application using Docker Compose
         uses: appleboy/ssh-action@master
         with:
@@ -46,6 +46,6 @@ jobs:
           script: |
             # execute the app using docker compose
             cd app
-            git checkout deploy/init-cicd
-            docker compose -f ./deploy/aws/docker-compose.yaml down --remove-orphans
-            docker compose -f ./deploy/aws/docker-compose.yaml up -d
+            git checkout main
+            docker compose -f docker-compose.prod.yaml down --remove-orphans
+            docker compose -f docker-compose.prod.yaml up -d
