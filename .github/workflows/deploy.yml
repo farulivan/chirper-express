@@ -24,7 +24,7 @@ jobs:
           docker tag ${{ steps.build-image.outputs.image-tag }} ${{ secrets.DOCKER_USER }}/${{ steps.build-image.outputs.image-tag }}
           docker push ${{ secrets.DOCKER_USER }}/${{ steps.build-image.outputs.image-tag }}
       - name: Download Repository Files
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
